@@ -1,0 +1,1 @@
+python subsetter.py postgresql://fec:cn5LhqoBQbvBSWo5Kd5w6JZpg@goldengate-dev.open.fec.gov:5432/fec postgresql://postgres:mysecretpassword@localhost:32768/fec --config config -f fecmur.case:60137 -f fecmur.case:58497 -f fecmur.case:36000000002131 -f fecmur.case:36000000001974 -f fecmur.case:46000000000959 -f fecmur.case:46000000001121 --schema fecmur 0.001
