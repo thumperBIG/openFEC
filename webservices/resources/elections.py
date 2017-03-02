@@ -33,6 +33,7 @@ def cycle_length(elections):
         ]
     )
 
+
 @doc(
     description=docs.ELECTION_SEARCH,
     tags=['financial']
@@ -89,11 +90,6 @@ class ElectionList(utils.Resource):
             CandidateHistory.two_year_period,
         ).filter(
             CandidateHistory.candidate_inactive == False,  # noqa
-            # TODO(jmcarp) Revert after #1271 is resolved
-            sa.or_(
-                CandidateHistory.district == None,  # noqa
-                CandidateHistory.district != '99',
-            )
         )
         if kwargs.get('cycle'):
             query = query.filter(CandidateHistory.election_years.contains(kwargs['cycle']))
@@ -114,6 +110,7 @@ class ElectionList(utils.Resource):
                     CandidateHistory.office.in_(['P', 'S']),
                 ),
             )
+        query = query.filter(CandidateHistory.office.in_(['H', 'S']))
         if kwargs.get('zip'):
             query = self._filter_zip(query, kwargs)
         return filters.filter_multi(query, kwargs, self.filter_multi_fields)
