@@ -156,17 +156,17 @@ class TestElections(ApiBaseTest):
 
     def test_missing_params(self):
         response = self.app.get(api.url_for(ElectionView))
-        self.assertEquals(response.status_code, 422)
+        self.assertEquals(response.status_code, 400)
 
     def test_conditional_missing_params(self):
         response = self.app.get(api.url_for(ElectionView, office='president', cycle=2012))
         self.assertEquals(response.status_code, 200)
         response = self.app.get(api.url_for(ElectionView, office='senate', cycle=2012))
-        self.assertEquals(response.status_code, 422)
+        self.assertEquals(response.status_code, 400)
         response = self.app.get(api.url_for(ElectionView, office='senate', cycle=2012, state='NY'))
         self.assertEquals(response.status_code, 200)
         response = self.app.get(api.url_for(ElectionView, office='house', cycle=2012, state='NY'))
-        self.assertEquals(response.status_code, 422)
+        self.assertEquals(response.status_code, 400)
         response = self.app.get(api.url_for(ElectionView, office='house', cycle=2012, state='NY', district='01'))
         self.assertEquals(response.status_code, 200)
 

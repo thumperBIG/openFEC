@@ -113,10 +113,10 @@ class SeekCoalescePaginator(paginators.SeekPaginator):
             else:
                 comparator = self.max_column_map.get(self.sort_column[5])
 
-            
+
             if 'coalesce' not in str(left_index):
                 left_index = sa.func.coalesce(left_index, comparator)
-        
+
 
             lhs += (left_index,)
             rhs += (sort_index,)
@@ -256,9 +256,7 @@ def check_election_arguments(kwargs):
     for arg in office_args_required:
         if kwargs.get(arg) is None:
             raise exceptions.ApiError(
-                'Required parameter "{0}" not found.'.format(arg),
-                status_code=422,
-            )
+                'Required parameter "{0}" not found.'.format(arg))
     conditional_args = office_args_map.get(kwargs['office'], [])
     for arg in conditional_args:
         if kwargs.get(arg) is None:
@@ -267,7 +265,6 @@ def check_election_arguments(kwargs):
                     arg,
                     kwargs['office'],
                 ),
-                status_code=422,
             )
 
 
