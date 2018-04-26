@@ -1,0 +1,5 @@
+@font-face {
+  font-family: "Gandhi Serif";
+  src: url("./fonts/gandhiserif-regular.woff2") format("woff2"),
+       url("./fonts/gandhiserif-regular.woff") format("woff");
+}

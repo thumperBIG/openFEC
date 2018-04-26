@@ -482,7 +482,7 @@ here, _ = os.path.split(__file__)
 docs = Blueprint(
     'docs',
     __name__,
-    static_folder=os.path.join(here, os.pardir, 'static', 'swagger-ui'),
+    static_folder=os.path.join(here, os.pardir, 'static', 'redoc'),
     static_url_path='/docs/static',
 )
 
@@ -493,7 +493,7 @@ def api_spec():
 
 
 @docs.add_app_template_global
-def swagger_static(filename):
+def layout_static(filename):
     return url_for('docs.static', filename=filename)
 
 
@@ -508,7 +508,7 @@ def api_ui_redirect():
 @docs.route('/developers/')
 def api_ui():
     return render_template(
-        'swagger-ui.html',
+        'redoc-ui.html',
         specs_url=url_for('docs.api_spec'),
         PRODUCTION=env.get_credential('PRODUCTION'),
     )
