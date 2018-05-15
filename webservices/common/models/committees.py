@@ -4,7 +4,6 @@ from webservices import docs
 
 from .base import db, BaseModel
 
-
 class CommitteeSearch(BaseModel):
     __tablename__ = 'ofec_committee_fulltext_mv'
 
@@ -22,11 +21,13 @@ class BaseCommittee(BaseModel):
 
     name = db.Column(db.String(100), index=True, doc=docs.COMMITTEE_NAME)
     committee_id = db.Column(db.String, primary_key=True, index=True, doc=docs.COMMITTEE_ID)
+    cycle = db.Column(db.Integer, primary_key=True, index=True, doc=docs.COMMITTEE_CYCLE)
     cycles = db.Column(ARRAY(db.Integer), index=True, doc=docs.COMMITTEE_CYCLE)
     treasurer_name = db.Column(db.String(100), index=True, doc=docs.TREASURER_NAME)
     treasurer_text = db.Column(TSVECTOR)
     committee_type = db.Column(db.String(1), index=True, doc=docs.COMMITTEE_TYPE)
     committee_type_full = db.Column(db.String(50), index=True, doc=docs.COMMITTEE_TYPE)
+    filing_frequency = db.Column(db.String(1))
     designation = db.Column(db.String(1), index=True, doc=docs.DESIGNATION)
     designation_full = db.Column(db.String(25), index=True, doc=docs.DESIGNATION)
     organization_type = db.Column(db.String(1), index=True, doc=docs.ORGANIZATION_TYPE)
@@ -62,6 +63,7 @@ class CommitteeHistory(BaseCommittee):
     zip = db.Column(db.String(9), doc='Zip code of committee as reported on the Form 1')
     candidate_ids = db.Column(ARRAY(db.Text), doc=docs.CANDIDATE_ID)
     cycle = db.Column(db.Integer, primary_key=True, index=True, doc=docs.COMMITTEE_CYCLE)
+    
 
 
 class CommitteeDetail(BaseConcreteCommittee):
@@ -70,7 +72,6 @@ class CommitteeDetail(BaseConcreteCommittee):
 
     first_file_date = db.Column(db.Date, doc=docs.FIRST_FILE_DATE)
     last_file_date = db.Column(db.Date, doc=docs.LAST_FILE_DATE)
-    filing_frequency = db.Column(db.String(1))
     email = db.Column(db.String(50), doc='Email as reported on the Form 1')
     fax = db.Column(db.String(10), doc='Fax as reported on the Form 1')
     website = db.Column(db.String(50), doc='Website url as reported on the Form 1')

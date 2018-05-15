@@ -239,41 +239,41 @@ def handle_exception(exception):
         'An API error occurred with the status code of {}.'.format(wrapped.status)
     )
 
-    if is_retrievable_from_cache(wrapped.status, request.path):
-        logger.info('Attempting to retrieving the cached request from S3...')
+    # if is_retrievable_from_cache(wrapped.status, request.path):
+    #     logger.info('Attempting to retrieving the cached request from S3...')
 
-        # Retrieve the information needed to construct a URL for the S3 bucket
-        # where the cached API responses live.
-        formatted_url = utils.format_url(request.url)
-        s3_bucket = utils.get_bucket()
-        bucket_region = env.get_credential('region')
-        cached_url = "http://s3-{0}.amazonaws.com/{1}/cached-calls/{2}".format(
-            bucket_region,
-            s3_bucket.name,
-            formatted_url
-        )
+    #     # Retrieve the information needed to construct a URL for the S3 bucket
+    #     # where the cached API responses live.
+    #     formatted_url = utils.format_url(request.url)
+    #     s3_bucket = utils.get_bucket()
+    #     bucket_region = env.get_credential('region')
+    #     cached_url = "http://s3-{0}.amazonaws.com/{1}/cached-calls/{2}".format(
+    #         bucket_region,
+    #         s3_bucket.name,
+    #         formatted_url
+    #     )
 
-        # Attempt to retrieve the cached data from S3.
-        cached_data = utils.get_cached_request(cached_url)
+    #     # Attempt to retrieve the cached data from S3.
+    #     cached_data = utils.get_cached_request(cached_url)
 
-        # If the cached data was returned, we can return that to the client.
-        # Otherwise, log the error and raise an API error.
-        if cached_data is not None:
-            logger.info('Successfully retrieved cached request from S3.')
-            return cached_data
-        else:
-            logger.error(
-                'An error occured while retrieving the cached file from S3.'
-            )
-            raise exceptions.ApiError(
-                'The requested URL could not be found.'.format(request.url),
-                status_code=http.client.NOT_FOUND
-            )
-    else:
-        raise exceptions.ApiError(
-            'The requested URL could not be found.'.format(request.url),
-            status_code=http.client.NOT_FOUND
-        )
+    #     # If the cached data was returned, we can return that to the client.
+    #     # Otherwise, log the error and raise an API error.
+    #     if cached_data is not None:
+    #         logger.info('Successfully retrieved cached request from S3.')
+    #         return cached_data
+    #     else:
+    #         logger.error(
+    #             'An error occured while retrieving the cached file from S3.'
+    #         )
+    #         raise exceptions.ApiError(
+    #             'The requested URL could not be found.'.format(request.url),
+    #             status_code=http.client.NOT_FOUND
+    #         )
+    # else:
+    #     raise exceptions.ApiError(
+    #         'The requested URL could not be found.'.format(request.url),
+    #         status_code=http.client.NOT_FOUND
+    #     )
 
 api.add_resource(candidates.CandidateList, '/candidates/')
 api.add_resource(candidates.CandidateSearch, '/candidates/search/')
@@ -290,6 +290,7 @@ api.add_resource(
     '/committee/<string:committee_id>/candidates/history/<int:cycle>/',
 )
 api.add_resource(committees.CommitteeList, '/committees/')
+
 api.add_resource(
     committees.CommitteeView,
     '/committee/<string:committee_id>/',

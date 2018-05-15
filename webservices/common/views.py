@@ -50,6 +50,7 @@ class ApiResource(utils.Resource):
         query = filters.filter_fulltext(query, kwargs, self.filter_fulltext_fields)
         if _apply_options:
             query = query.options(*self.query_options)
+
         return query
 
 

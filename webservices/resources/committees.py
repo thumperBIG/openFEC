@@ -40,6 +40,7 @@ class CommitteeList(ApiResource):
 
     filter_multi_fields = [
         ('committee_id', models.Committee.committee_id),
+        ('filing_frequency', models.Committee.filing_frequency),
         ('designation', models.Committee.designation),
         ('organization_type', models.Committee.organization_type),
         ('state', models.Committee.state),
@@ -71,7 +72,7 @@ class CommitteeList(ApiResource):
 
     def build_query(self, **kwargs):
         query = super().build_query(**kwargs)
-
+        
         if {'receipts', '-receipts'}.intersection(kwargs.get('sort', [])) and 'q' not in kwargs:
             raise exceptions.ApiError(
                 'Cannot sort on receipts when parameter "q" is not set',
@@ -142,12 +143,15 @@ class CommitteeView(ApiResource):
                 models.CandidateCommitteeLink.candidate_id == candidate_id
             ).distinct()
 
+        if kwargs.get('filing_frequency'):
+            query = filter_year(models.CommitteeDetail, query, kwargs['filing_frequency'])
+
         if kwargs.get('year'):
-            query = filter_year(models.CommitteeDetail, query, kwargs['year'])
+            query = filter_year(models.CommitteeDetail, query, kwargs['year'])    
 
         if kwargs.get('cycle'):
             query = query.filter(models.CommitteeDetail.cycles.overlap(kwargs['cycle']))
-
+        
         return query
 
 
