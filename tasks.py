@@ -142,7 +142,8 @@ def _detect_space(repo, branch=None, yes=False):
 DEPLOY_RULES = (
     ('prod', _detect_prod),
     ('stage', lambda _, branch: branch.startswith('release')),
-    ('dev', lambda _, branch: branch == 'develop'),
+    #('dev', lambda _, branch: branch == 'develop'),
+    ('dev', lambda _, branch: branch == 'feature/test-out-of-order-migration'),
 )
 
 
@@ -181,7 +182,7 @@ def deploy(ctx, space=None, branch=None, login=None, yes=False):
 
     print("\nMigrating database...")
     jdbc_url = to_jdbc_url(os.getenv('FEC_MIGRATOR_SQLA_CONN_{0}'.format(space.upper())))
-    run_migrations(ctx, jdbc_url)
+    run_migrations(ctx, jdbc_url, 'true')
     print("Database migrated\n")
 
     # Set deploy variables
@@ -225,5 +226,5 @@ def create_sample_db(ctx):
     print("Materialized views refreshed")
 
 @task
-def run_migrations(ctx, jdbc_url):
-    ctx.run('flyway migrate -q -url="{0}" -locations=filesystem:data/migrations'.format(jdbc_url))
+def run_migrations(ctx, jdbc_url, out_of_order='false'):
+    ctx.run('flyway migrate -q -url="{0}" -locations=filesystem:data/migrations -outOfOrder={1}'.format(jdbc_url, out_of_order))
