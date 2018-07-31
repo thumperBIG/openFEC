@@ -251,6 +251,8 @@ committee_list = {
     'party': fields.List(IStr, description=docs.PARTY),
     'min_first_file_date': fields.Date(description='Selects all committees whose first filing was received by the FEC after this date'),
     'max_first_file_date': fields.Date(description='Selects all committees whose first filing was received by the FEC before this date'),
+    'min_last_f1_date': fields.Date(description='WIP'),
+    'max_last_f1_date': fields.Date(description='WIP'),
     'treasurer_name': fields.List(fields.Str, description=docs.TREASURER_NAME),
 }
 
